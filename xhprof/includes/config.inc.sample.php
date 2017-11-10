@@ -10,4 +10,5 @@ return array(
     'min_cpu_time' => 0, // Only store runs with total CPU time greater than value (microseconds)
     'min_mem_usage' => 0, // Only store runs with memory usage greater than value (bytes)
     'min_peak_mem_usage' => 0, // Only store runs with peak memory usage greater than value (bytes)
+    'display_charts' => false, // display charts?
 );

@@ -47,7 +47,9 @@ if (isset($_GET['xhprof']['query']['second_request_id'])) {
 
 require __DIR__ . '/form.inc.tpl.php';
 
-require __DIR__ . '/pie.inc.tpl.php';
+if ($config['display_charts']) {
+    require __DIR__ . '/pie.inc.tpl.php';
+}
 
 /**
  * @param string $name Metrics name.

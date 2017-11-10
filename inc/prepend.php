@@ -43,7 +43,10 @@ function xhprof_init()
         return false;
     }
 
-    $xhprofMainConfig = require __DIR__ . '/../xhprof/includes/config.inc.php';
+    $mainConfig = __DIR__ . '/../xhprof/includes/config.inc.php';
+
+    /** @noinspection PhpIncludeInspection */
+    $xhprofMainConfig = file_exists($mainConfig) ? require $mainConfig : $appConfig;
 
     // check the global enable switch, but only when no app-config enable switch was defined
     if (!isset($appConfig['enabled']) && isset($xhprofMainConfig['profiler_enabled']) && !$xhprofMainConfig['profiler_enabled']) {

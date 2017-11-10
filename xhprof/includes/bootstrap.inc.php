@@ -42,7 +42,9 @@ if (file_exists(BASE_PATH . '/includes/config.inc.php')) {
 
 // Allow to overwrite default configuration in execution environment.
 if (isset($xhprof_config)) {
-    $config = array_merge($config, $xhprof_config);
+    $config = $xhprof_config instanceof LazyConfig
+        ? $xhprof_config->append($config)
+        : array_merge($config, $xhprof_config);
 }
 
 if (!isset($config['url_base'], $config['pdo'])) {

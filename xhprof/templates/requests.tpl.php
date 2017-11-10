@@ -21,7 +21,9 @@ if(empty($data['discrete'])) {
 
 require __DIR__ . '/summary.inc.tpl.php';
 
-require __DIR__ . '/histogram.inc.tpl.php';
+if ($config['display_charts']) {
+    require __DIR__ . '/histogram.inc.tpl.php';
+}
 ?>
 <div class="table-wrapper">
     <table class="requests ay-sort">
