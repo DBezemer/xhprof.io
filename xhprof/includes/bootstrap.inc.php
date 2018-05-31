@@ -83,7 +83,7 @@ if (filter_has_var(INPUT_POST, 'ay')) {
     $_SESSION['ay']['flash']['input']	= $_POST['ay'];
 }
 
-if (empty($_SESSION['xhprof']['remote_version'])) {
+if ($config['enable_version_check'] && empty($_SESSION['xhprof']['remote_version'])) {
     $ch			= curl_init();
 
     curl_setopt_array($ch, array(

@@ -11,7 +11,8 @@ function xhprof_init()
 {
     global $xhprofMainConfig;
 
-    if (!extension_loaded('xhprof')) {
+    // looking for xhprof extension or it's fork
+    if (strpos(implode('|', get_loaded_extensions()), 'xhprof') === false) {
         return false;
     }
 
@@ -53,8 +54,23 @@ function xhprof_init()
         return false;
     }
 
-    xhprof_enable(XHPROF_FLAGS_MEMORY | XHPROF_FLAGS_CPU);
+    if (!isset($xhprofMainConfig['extension_mapping'])) {
+        $xhprofMainConfig['extension_mapping'] = array(
+            'enable' => 'xhprof_enable',
+            'disable' => 'xhprof_disable',
+        );
+    }
 
+    // wrong extension mapping?
+    if (!isset($xhprofMainConfig['extension_mapping']['enable'], $xhprofMainConfig['extension_mapping']['disable'])) {
+        return false;
+    }
+
+    if (!isset($xhprofMainConfig['flags'])) {
+        $xhprofMainConfig['flags'] = XHPROF_FLAGS_MEMORY | XHPROF_FLAGS_CPU;
+    }
+
+    call_user_func($xhprofMainConfig['extension_mapping']['enable'], $xhprofMainConfig['flags']);
     return true;
 }
 
@@ -62,7 +78,12 @@ function xhprof_shutdown()
 {
     global $xhprofMainConfig;
 
-    $xhprof_data	= xhprof_disable();
+    $xhprof_data = call_user_func($xhprofMainConfig['extension_mapping']['disable']);
+
+    // something wrong with response. skip
+    if (!is_array($xhprof_data)) {
+        return;
+    }
 
     if(function_exists('fastcgi_finish_request')) {
         fastcgi_finish_request();

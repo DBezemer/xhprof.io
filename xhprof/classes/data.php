@@ -379,7 +379,11 @@ class data
 
         $data				= array();
 
-        $data['discrete']	= $this->db->query("SELECT * FROM `temporary_request_data`;")->fetchAll(PDO::FETCH_ASSOC);
+        $data['discrete']	= $this->db->query("
+            SELECT * FROM `temporary_request_data`
+            ORDER BY
+              `request_id` desc;
+        ")->fetchAll(PDO::FETCH_ASSOC);
 
         return $data;
     }
