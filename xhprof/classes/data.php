@@ -289,6 +289,12 @@ class data
 
     private function fetchOrCreatePlayerId($name)
     {
+        // some players looks like that: "mysqli_query# SELECT ID, MESSAGE, MESSAGE_LID", so cut down query part
+        // because it can be huge
+        if (false !== ($delimiter = strpos($name, '#'))) {
+            $name = substr($name, 0, $delimiter);
+        }
+
         static $playerIdCache = array();
 
         if (isset($playerIdCache[$name])) {
